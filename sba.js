@@ -2,7 +2,7 @@ const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript",
 };
-
+console.log(CourseInfo);
 // The provided assignment group.
 const AssignmentGroup = {
   id: 12345,
@@ -30,7 +30,7 @@ const AssignmentGroup = {
     },
   ],
 };
-
+console.log(AssignmentGroup);
 // The provided learner submission data.
 const LearnerSubmissions = [
   {
@@ -74,6 +74,7 @@ const LearnerSubmissions = [
     },
   },
 ];
+console.log(LearnerSubmissions);
 
 function getLearnerData(course, ag, submissions) {
   // here, we would process this data to achieve the desired result.
@@ -98,6 +99,7 @@ function getLearnerData(course, ag, submissions) {
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 console.log(result);
+console.log(getLearnerData);
 // /   data such that the output of your program is an array of objects,
 //   each containing the following information in the following format:
 
@@ -118,131 +120,95 @@ console.log(result);
 // let learnerScore = LearnerSubmissions[0].submission.score
 // console.log(learnerScore);
 //   for (let learnerScore = 0; learnerScore < (LearnerSubmissions[learnerScore].submission.score)
-// .length; learnerScore ++) {
-   
-//     }
+// .length; learnerScore ++) {}
 
-//     let learnerScore = LearnerSubmissions[0].submission.score;
-// console.log(learnerScore);
-// for (let i = 0; i < learnerScore.length; i++) {
-//     // Your code logic here...
-// }
-//     let assignmentKeys = Object.keys(learner.assignments);
-//     const totalScore = assignmentKeys.reduce((sum, key) => {
-//       let { score, points_possible } = learner.assignments[key];
-//       return sum + score / points_possible;
-//     }, 0);
-//     const weightedAverage = (totalScore / totalPointsPossible) * 100;
-
-//   return {
-//     id: learner.id,
-
-//     avg: weightedAverage,
-//     ...learner.assignments,
-//   };
-
-
-// console.log(learnersWithAverages);
-
-  
-
-
-
-   
-//     assignments: {
-//       assignment1: { score: 39, points_possible: 50 },
-//       assignment2: { score: 140, points_possible: 150 },
-//     },
-//   },
-  
-// ];
-   
-
-// Calculate weighted average for each learner
-
-// const learnersWithAverages = learnersData.map((learner) => {
-
- 
-//   const totalPointsPossible = assignmentKeys.reduce((sum, key) => {
-//     let { points_possible } = learner.assignments[key];
-//     return sum + points_possible;
-//   }, 0);
-  
- 
-
-  
-
-// //////////////////////////////////
-
-// function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmission) {
-//     // Your implementation here...
-//     // You can process the input parameters and create the desired output format.
-//     // For example:
-//     const formattedResult = [];
-
-//     // Create an object for each learner submission
-//     LearnerSubmission.forEach((submission) => {
-//         const learnerData = {
-//             course: CourseInfo.courseName,
-//             assignmentGroup: AssignmentGroup,
-//             submissionDate: submission.date,
-//             grade: submission.grade,
-//         };
-//         formattedResult.push(learnerData);
-//     });
-
-//     return formattedResult;
-// }
-////////////////////////////////////////////////////////
-
-
-  
-  // Calculate the weighted average and assignment scores
-  const learners = {};
-  const pointsPossible = {
-    1: 100, // Points possible for assignment 1
-    2: 200, // Points possible for assignment 2
-    3: 500, // Points possible for assignment 3
-  };
-  try {
-    // Code that may throw an exception
+// Calculate the weighted average and assignment scores
+const learners = {};
+const pointsPossible = {
+  1: 50, // Points possible for assignment 1
+  2: 150, // Points possible for assignment 2
+  3: 500, // Points possible for assignment 3
+};
+try {
+  // Code that may throw an exception
 } catch (error) {
-    // Code to handle the error
-  } finally {
-    // Code to run irrespective of error
-  }
-  LearnerSubmissions.forEach((submission) => {
-    const { learner_id, assignment_id, submission: { score } } = submission;
-    if (!learners[learner_id]) {
-      learners[learner_id] = {
-        id: learner_id,
-        totalScore: 0,
-        totalWeight: 0,
-        scores: {},
-      };
-    }
-    
-    learners[learner_id].totalScore += score;
-    learners[learner_id].totalWeight += pointsPossible[assignment_id];
-    learners[learner_id].scores[assignment_id] = (score / pointsPossible[assignment_id]) * 100;
-  });
-  
-  // Calculate the weighted average for each learner
-  const transformedData = Object.values(learners).map((learner) => {
-
-    let avg = (learner.totalScore / learner.totalWeight) * 100;
-    
-    return {
-      id: learner.id,
-      avg,
-      ...learner.scores,
+  // Code to handle the error
+} finally {
+  // Code to run irrespective of error
+}
+LearnerSubmissions.forEach((submission) => {
+  const {
+    learner_id,
+    assignment_id,
+    submission: { score },
+  } = submission;
+  if (!learners[learner_id]) {
+    learners[learner_id] = {
+      id: learner_id,
+      totalScore: 0,
+      totalWeight: 0,
+      scores: {},
     };
-  });
-  
-  console.log(transformedData);
-  
-//   const myArray = ["Hello", "World"];
-// for (const element of myArray) {
-//     console.log(element);
-// }
-////////////////////////////////////
+  }
+
+  learners[learner_id].totalScore += score;
+  learners[learner_id].totalWeight += pointsPossible[assignment_id];
+  learners[learner_id].scores[assignment_id] =
+    (score / pointsPossible[assignment_id]) * 100;
+});
+
+// Calculate the weighted average for each learner
+const transformedData = Object.values(learners).map((learner) => {
+  let avg = (learner.totalScore / learner.totalWeight) * 100;
+
+  return {
+    id: learner.id,
+    avg,
+    ...learner.scores,
+  };
+});
+
+console.log(transformedData);
+
+// If an assignment is not yet due, do not include it in the results or the average.
+// Additionally, if the learner’s submission is late (submitted_at is past due_at),
+// deduct 10 percent of the total points possible from their score for that assignment.
+
+
+function calculatesubmissionlateScore(assignments) {
+  let totalPoints = 0;
+
+  for (let assignment of assignments) {
+    const { due_at, submitted_at, points_possible } = assignment;
+
+    // Exclude assignments that are not yet due
+    if (due_at && new Date() >= new Date(due_at)) {
+      const timeDifference = new Date(submitted_at) - new Date(due_at);
+
+      // Deduct 10% for late submissions
+      const latePenalty = timeDifference > 0 ? 0.1 * points_possible : 0;
+
+      // Update total points 
+      totalPoints += Math.max(0, points_possible - latePenalty);
+     
+    }
+  }
+}
+const assignments = [
+  {
+    due_at: "3156-11-15T23:59:59",
+    submitted_at: "2023-03-07T10:00:00",
+    points_possible: 500,
+  },
+  {
+    due_at: "2023-02-27T23:59:59",
+    submitted_at: "2023-01-24T09:00:00",
+    points_possible: 150,
+  },
+  {
+    due_at: "2023-01-25T23:59:59",
+    submitted_at: "2023-04-24T09:00:00",
+    points_possible: 50,
+  },
+];
+console.log(calculatesubmissionlateScore, pointsPossible);
